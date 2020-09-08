@@ -1,0 +1,34 @@
+GAlexa 
+
+The following files and directories describe the different code parts of GAlexa:
+
+GAlexa/
+  |
+  +-- src/
+  |     Java sources in here.
+  +-- lib/
+  |     any external files used by your plugin (e.g. Netica-J jars could go here)
+  |    
+  +-- build.xml
+  |     Ant build file for building and running the java classes and jar.
+  +-- build
+  |     java classes and jar in corresponding subdirectories
+  |   
+  +-- Data 
+  |	data files for input and output can be found here
+
+To build the system you can use Ant:
+
+ant main
+
+This will compile the Java code, package the classes into a JAR file and run it with the 
+command line arguments specified in build.xml.  Please have a look in build.xml to see how you can modify the paths or other arguments for your own task.
+
+Important notes:
+================
+
+(1) GAlexa makes use of the Netica-J API but that is not distributed together with GAlexa here. Please make sure you download ir from the Norsys website. 
+
+The version used for this build is NeticaJ_504 which comes in 32-bit. For this reason, you will need to use a 32-bit JVM and set the JAVA_HOME path appropriately (the version used for the jar was "1.8.0_261").
+
+(2) GAlexa is currently a very early prototype and the exemplary questions are provided in a structured form of a predicate with a single subject and multiple objects (implemented currently in XML). The structure of the file Data/questions.xml is simple enough to understand the type of questions it can answer. Please note that the node names and attributes are case-sensitive and must correspond exactly to those found in the Bayes net. The system currently does not have elaborate functionalities for handling misspellings etc.

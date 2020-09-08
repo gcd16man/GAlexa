@@ -1,0 +1,14 @@
+package uk.ac.manchester.galexa;
+/* 
+ *  GAlexaQuestion.java
+ *
+ * Copyright (C) 2020, UoM.
+ * The software in this file may be copied, modified, and/or included in 
+ * derivative works without charge or obligation.
+ * This file contains example software only, and Norsys makes no warranty that 
+ * it is suitable for any particular purpose, or without defects.
+ */
+
+public class GAlexaQuestion {
+
+]

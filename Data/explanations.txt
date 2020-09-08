@@ -1,0 +1,12 @@
+Original query: What is the probability that Tuberculosis is "present"?
+Answer: The probability that Tuberculosis is "present" is 0.010399998165667057.
+
+Original query: What is the probability that Tuberculosis is "present" given that XRay is "abnormal"?
+Answer: The probability that Tuberculosis is "present" given that XRay is "abnormal" is 0.09241089224815369.
+
+Original query: What is the probability that Tuberculosis is "present" given that VisitAsia is "visit" and XRay is "abnormal"?
+Answer: The probability that Tuberculosis is "present" given that VisitAsia is "visit" and XRay is "abnormal" is 0.33771562576293945.
+
+Original query: What is the probability that Tuberculosis is "present" given that VisitAsia is "visit", XRay is "abnormal" and Cancer is "present"?
+Answer: The probability that Tuberculosis is "present" given that VisitAsia is "visit", XRay is "abnormal" and Cancer is "present" is 0.05000000447034836.
+

@@ -1,0 +1,157 @@
+package uk.ac.manchester.galexa;
+/* 
+ *  GAlexaQuestionReader.java
+ *
+ *  Example use of Netica-J to construct a Bayes net and save it to file.
+ *
+ * Copyright (C) 2020, UoM.
+ * The software in this file may be copied, modified, and/or included in 
+ * derivative works without charge or obligation.
+ * This file contains example software only, and Norsys makes no warranty that 
+ * it is suitable for any particular purpose, or without defects.
+ */
+
+import org.w3c.dom.*;
+import org.apache.xerces.parsers.DOMParser;
+     
+public class GAlexaQuestionReader {
+
+public static void domParse(String configURL) {
+
+	try {
+	    // create a DOMParser
+	    DOMParser parser=new DOMParser();
+	    parser.parse(configURL);
+	    // get the DOM Document object
+	    org.w3c.dom.Document doc=parser.getDocument();
+
+	    // get all the classes nodes
+	    NodeList classes = doc.getElementsByTagName("ClassName");
+	    int numberOfClasses =  classes.getLength();
+	    //System.out.println("classes=" + numberOfClasses);
+	    // retrieve all info about the classes
+	    for (int i=0; i<numberOfClasses;i++) {
+	
+            // get one class node
+            org.w3c.dom.Node node = classes.item(i);
+
+	    // get the child nodes of a class node 
+            NodeList classChildNodeList = node.getChildNodes();
+	    
+	    // get the SourceName and OWLName values 
+
+	       String elementName  = null;
+	       String sName = null;
+		String oName = null;
+	    for(int j=0; j<classChildNodeList.getLength(); j++) {
+	
+               org.w3c.dom.Node childNode = classChildNodeList.item(j);
+	       elementName = childNode.getNodeName();
+	       //System.out.println("\nCurrent Element :" + elementName);
+
+		if (childNode.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
+
+			Element eElement = (Element) childNode;
+			Text elText = (Text) eElement.getFirstChild();
+			String theValue = elText.getNodeValue().trim();
+			
+			if (elementName.equals("SourceName")) {sName=theValue;}
+			else if (elementName.equals("OWLName")) {
+			    oName=theValue;
+			}
+		}
+	    }
+	    //System.out.println("----" + sName+ "-----" +oName);
+			if ((sName != null && !sName.isEmpty()) 
+			    && (oName != null && !oName.isEmpty())) {			   
+			    gate2OwlClassNames.put(sName,oName);						
+			}
+	    
+	    }
+	    // now get all the object properties
+	    NodeList objProps = doc.getElementsByTagName("ObjectProperty");
+	    int numberOfObjProps =  objProps.getLength();
+	    //System.out.println("objprops=" + numberOfObjProps);
+	    // retrieve all info about the classes
+	    for (int i=0; i<numberOfObjProps;i++) {
+	
+            // get one class node
+            org.w3c.dom.Node node = objProps.item(i);
+
+	    // get the child nodes of a class node 
+            NodeList classChildNodeList = node.getChildNodes();
+	    
+	    // get the SourceName and OWLName values 
+
+	    String elementName  = null;
+	    String sName = null;
+	    String oName = null;
+
+	    for(int j=0; j<classChildNodeList.getLength(); j++) {
+
+               org.w3c.dom.Node childNode = classChildNodeList.item(j);
+	       elementName = childNode.getNodeName();
+	       //System.out.println("\nCurrent Element :" + elementName);
+
+		if (childNode.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
+
+			Element eElement = (Element) childNode;
+			Text elText = (Text) eElement.getFirstChild();
+			String theValue = elText.getNodeValue().trim();
+			//System.out.println("==== " + theValue);
+			if (elementName.equals("SourceName")) {sName=theValue;}
+			else if (elementName.equals("OWLName")) {
+			    oName=theValue;
+			  			}
+            }
+	    }
+	    	if ((sName != null && !sName.isEmpty()) 
+			    && (oName != null && !oName.isEmpty())) {			   
+			    gate2OwlObjectProperties.put(sName,oName);						
+			}
+	    }
+
+	    // finally get all the dataprops
+	    NodeList dataProps = doc.getElementsByTagName("DataProperty");
+	    int numberOfDataProps =  dataProps.getLength();
+	    //System.out.println("dataprops=" + numberOfDataProps);
+	    // retrieve all info about the classes
+	    for (int i=0; i<numberOfDataProps;i++) {
+		// get one class node
+            org.w3c.dom.Node node = dataProps.item(i);
+
+	    // get the child nodes of a class node 
+            NodeList classChildNodeList = node.getChildNodes();
+	    
+	    // get the SourceName and OWLName values 
+	       String elementName  = null;
+	       String sName = null;
+	       String oName = null;
+	    for(int j=0; j<classChildNodeList.getLength(); j++) {
+
+               org.w3c.dom.Node childNode = classChildNodeList.item(j);
+	       elementName = childNode.getNodeName();
+	       //  System.out.println("\nCurrent Element :" + elementName);
+
+		if (childNode.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
+
+			Element eElement = (Element) childNode;
+			Text elText = (Text) eElement.getFirstChild();
+			String theValue = elText.getNodeValue().trim();
+			//System.out.println("==== " + theValue);
+			if (elementName.equals("SourceName")) {sName=theValue;}
+			else if (elementName.equals("OWLName")) {
+			    oName=theValue;
+			  
+			}
+            }
+	    }
+	    	if ((sName != null && !sName.isEmpty()) 
+			    && (oName != null && !oName.isEmpty())) {			   
+			    gate2OwlDataProperties.put(sName,oName);						
+			}
+	    }
+    } catch (Exception e) {e.printStackTrace(System.err);}
+
+    }
+}

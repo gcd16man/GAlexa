@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- the values are case sensitive --> 
+<Questions>
+ <Question>
+ 	<Predicate>probability_of</Predicate>
+        <Subject>Tuberculosis</Subject>
+ </Question>
+ <Question>
+ 	<Predicate>probability_of</Predicate>
+        <Subject>Tuberculosis</Subject>
+ 	<Object state="abnormal">Xray</Object>
+ </Question>
+ <Question>
+ 	<Predicate>probability_of</Predicate>
+        <Subject>Tuberculosis</Subject>
+ 	<Object state="abnormal">Xray</Object>
+ 	<Object state="visit">VisitAsia</Object>
+ </Question>
+ <Question>
+ 	<Predicate>probability_of</Predicate>
+        <Subject>Tuberculosis</Subject>
+ 	<Object state="abnormal">Xray</Object>
+ 	<Object state="visit">VisitAsia</Object>
+ 	<Object state="lungCancer">Cancer</Object>
+ </Question>
+ </Questions>

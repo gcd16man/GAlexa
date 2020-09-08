@@ -1,0 +1,158 @@
+package uk.ac.manchester.galexa;
+/* 
+ *  GAlexaMain.java
+ *
+ *  Example use of Netica-J to construct a Bayes net and save it to file.
+ *
+ * Copyright (C) 2020, UoM.
+ * The software in this file may be copied, modified, and/or included in 
+ * derivative works without charge or obligation.
+ * This file contains example software only, and Norsys makes no warranty that 
+ * it is suitable for any particular purpose, or without defects.
+ */
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.io.IOException;
+import norsys.netica.*;
+import norsys.neticaEx.aliases.Node;
+
+     
+public class GAlexaMain {
+
+  public static void main (String[] args){
+      	String name = "GAlexa_COVID19";
+	System.out.println("Java environment:" + System.getProperty("sun.arch.data.model"));
+	System.out.println("Net: " + name);
+
+	System.out.println("Config file path: " + args[0]);
+
+try {
+List<String> lines = Files.readAllLines(Paths.get(args[0]));
+
+for (String line: lines) {
+    System.out.println(line);
+}
+}catch(IOException ioe){ioe.printStackTrace();}
+
+    try {
+	Node.setConstructorClass ("norsys.neticaEx.aliases.Node");
+	Environ env = new Environ (null);
+
+	Net net = new Net();
+
+	net.setName(name);
+
+	/*	Node obesity    = new Node ("Obesity",   "_1_to18,_18_to_25,_25to_35,_35_to_45,_45plus",  net);
+	Node diabetes = new Node ("Diabetes","present,absent",  net);
+	Node cvd      = new Node ("CVD",     "smoker,nonsmoker",net);
+	Node cancer       = new Node ("Cancer",      "present,absent",  net);
+	Node bronchitis   = new Node ("Bronchitis",  "present,absent",  net);
+	Node gender   = new Node ("Gender",  "male,female",  net);
+	Node age   = new Node ("Age",  "_1to16,_16to30,_30to39,_40to49,_50to59,_60to69,_70to79,_80plus",  net);
+	Node pneumoniaCOVID19   = new Node ("PatientsPneumoniaCOVID19",  "present,absent",  net);
+	Node pneumoniaNonCOVID19   = new Node ("PatientsPneumoniaNonCOVID19",  "present,absent",  net);
+	Node proportionDeadCOVID19   = new Node ("ProportionDeadCOVID19",  "_0to20,_21to40,_41to60,_61to80,_81to100",  net);
+	Node proportionDeadNonCOVID19   = new Node ("ProportionDeadNonCOVID19",  "_0to20,_21to40,_41to60,_61to80,_81to100",  net);
+	
+	obesity.setTitle ("Obesity");
+	cancer.setTitle ("Cancer");
+	cvd.setTitle ("CVD");
+	diabetes.setTitle ("Diabetes");
+	bronchitis.setTitle ("Bronchitis");
+	gender.setTitle ("Gender");
+	age.setTitle ("Age");
+	pneumoniaCOVID19.setTitle ("Patients-Pneumonia-COVID19");
+	pneumoniaNonCOVID19.setTitle ("Patients-Pneumonia-Non-COVID19");
+	proportionDeadCOVID19.setTitle ("Proportion-Dead-COVID19");
+	proportionDeadNonCOVID19.setTitle ("Proportion-Dead-NonCOVID19");
+ 
+	obesity.addLink (pneumoniaCOVID19); // link from obesity to pneumoniaCOVID19
+	cancer.addLink (pneumoniaCOVID19);
+	cvd.addLink (pneumoniaCOVID19);
+	cancer.addLink (pneumoniaCOVID19);
+	bronchitis.addLink (pneumoniaCOVID19);
+	gender.addLink (pneumoniaCOVID19);
+	age.addLink (pneumoniaCOVID19);
+
+	obesity.addLink (pneumoniaNonCOVID19); // link from obesity to pneumoniaNonCOVID19
+	cancer.addLink (pneumoniaNonCOVID19);
+	cvd.addLink (pneumoniaNonCOVID19);
+	cancer.addLink (pneumoniaNonCOVID19);
+	bronchitis.addLink (pneumoniaNonCOVID19);
+	gender.addLink (pneumoniaNonCOVID19);
+	age.addLink (pneumoniaNonCOVID19);
+	*/
+
+	Node visitHospital    = new Node ("VisitAsia",   "visit,no_visit",  net);
+	Node obesity = new Node ("Obesity","present,absent",  net);
+	Node smoking      = new Node ("Smoking",     "smoker,nonsmoker",net);
+	Node cancer       = new Node ("Cancer",      "present,absent",  net);
+	//	Node tbOrCa       = new Node ("TbOrCa",      "true,false",      net);
+	Node xRay         = new Node ("XRay",        "abnormal,normal", net);
+	Node dyspnea      = new Node ("Dyspnea",     "present,absent",  net);
+	Node bronchitis   = new Node ("Bronchitis",  "present,absent",  net);
+
+	visitHospital.setTitle ("Visit to Hospital");
+	cancer.setTitle ("Cancer");
+	//tbOrCa.setTitle ("Tuberculosis or Cancer");
+
+	visitHospital.state("visit").setTitle ("Admitted to Hospital");
+	
+	//	tuberculosis.addLink (visitHospital); // link from visitAsia to tuberculosis
+	cancer.addLink (visitHospital);
+	//	tbOrCa.addLink (tuberculosis);
+	//	tbOrCa.addLink (cancer);
+	//xRay.addLink (tbOrCa);
+	//dyspnea.addLink (tbOrCa);
+	bronchitis.addLink (xRay);
+	dyspnea.addLink (bronchitis);
+
+	visitHospital.setCPTable (0.01, 0.99);
+
+	                       // VisitAsia   present  absent
+	//	tuberculosis.setCPTable ("visit",     0.05,    0.95);
+	//	tuberculosis.setCPTable ("no_visit",  0.01,    0.99);
+
+	smoking.setCPTable (0.5, 0.5);
+
+	                 // Smoking      present  absent
+	//cancer.setCPTable ("smoker",     0.1,     0.9);
+	//cancer.setCPTable ("nonsmoker",  0.01,    0.99);
+
+	                     // Smoking      present  absent
+	//bronchitis.setCPTable ("smoker",     0.6,     0.4);
+	//bronchitis.setCPTable ("nonsmoker",  0.3,     0.7);
+	
+	//	tbOrCa.setEquation ("TbOrCa (Tuberculosis, Cancer) = Tuberculosis || Cancer");
+	//	tbOrCa.equationToTable (1, false, false);
+
+	//the above is a convenient way of doing:
+	//tbOrCa.setCPTable ("present", "present", 1.0, 0.0);
+	//tbOrCa.setCPTable ("present", "absent",  1.0, 0.0);
+	//tbOrCa.setCPTable ("absent",  "present", 1.0, 0.0);
+	//tbOrCa.setCPTable ("absent",  "absent",  0.0, 1.0);
+
+	               // TbOrCa    abnormal normal
+	//xRay.setCPTable ("true",    0.98,    0.02);
+	//xRay.setCPTable ("false",   0.05,    0.95);
+
+	                 // TbOrCa   Bronchitis 
+	//dyspnea.setCPTable ("true",  "present", 0.9, 0.1);
+	//dyspnea.setCPTable ("true",  "absent",  0.7, 0.3);
+	//dyspnea.setCPTable ("false", "present", 0.8, 0.2);
+	//dyspnea.setCPTable ("false", "absent",  0.1, 0.9);
+
+
+	Streamer stream = new Streamer ("Data\\GAlexa.dne");
+	net.write (stream);
+
+	net.finalize();  // free resources immediately and safely; not strictly necessary, but a good habit
+    }
+    catch (Exception e) {
+	e.printStackTrace();
+    }
+  }
+}
